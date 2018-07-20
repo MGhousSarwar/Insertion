@@ -22,8 +22,18 @@ namespace InsertionSort
         private void button1_Click(object sender, EventArgs e)
         {
             ///hck
-
-            max = Convert.ToInt64(textBox1.Text);
+            if (textBox1.Text == "")
+            {
+                try
+                {
+                    int[] arr = textBox2.Text.Split(',').ToArray().Select(int.Parse).ToArray();
+                    numarray = arr;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Invalid Input \n Input Shoud be integer coma seperated");
+                }
+            }
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
@@ -32,28 +42,40 @@ namespace InsertionSort
 
             }).Start();
         }
+        int[] numarray;
         public int InsertionSorting()
         {
             panel2.Controls.Clear();
             label2.Text = "";
             int x = 12;
             int y = 20;
-            int[] numarray = new int[max];
+            if (textBox1.Text != "")
+            {
+                max = Convert.ToInt64(textBox1.Text);
+
+                numarray = new int[max];
+            }
+            else
+            {
+                max = numarray.Length;
+            }
 
             Random rnd = new Random();
             int month = rnd.Next(1, 13);
             label2.Text += "Numbers Are :";
             for (int i = 0; i < max; i++)
             {
-                numarray[i] = rnd.Next(0, 999);
-                label2.Text += numarray[i]+" ";
+                if (textBox1.Text != "")
+                {
+                    numarray[i] = rnd.Next(0, 999);
+                }
+                
+                label2.Text += numarray[i] + " ";
 
             }
-            for (int k = 0; k < max; k++)
-            {
-                Console.Write(numarray[k] + " ");
-            }
-            Console.Write("\n");
+
+
+
             for (int i = 1; i < max; i++)
             {
                 int j = i;
@@ -90,13 +112,13 @@ namespace InsertionSort
                     //label2.Text += (numarray[k] + " ");
                     Label label = new Label();
                     label.BorderStyle = BorderStyle.FixedSingle;
-                    if (check>k)
+                    if (check > k)
                     {
-                        label.ForeColor =Color.Red;
+                        label.ForeColor = Color.Red;
                     }
                     label.Text = (numarray[k] + " ");
-                    label.Location = new Point(x,y);
-                   // old = label;
+                    label.Location = new Point(x, y);
+                    // old = label;
                     panel2.BeginInvoke((MethodInvoker)delegate ()
                     {
                         panel2.Controls.Add(label);
@@ -104,7 +126,7 @@ namespace InsertionSort
                     x += label.Size.Width;
 
                 }
-                y+=labell.Size.Height;
+                y += labell.Size.Height;
                 x = 12;
 
 
@@ -130,7 +152,12 @@ namespace InsertionSort
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
         }
     }
 }
